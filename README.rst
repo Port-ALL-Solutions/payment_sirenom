@@ -34,16 +34,16 @@ Displayed as key/value pairs on our server: Enabled
 
 * Configure
 
-Payment method(This journal is used to auto pay invoice when online payment is 
+** Payment method(This journal is used to auto pay invoice when online payment is 
 received): create new or select existing journal Visible in Portal/Website: 
 Enabled
 
-Environment: Test or Production
+** Environment: Test or Production
 
-Process Method: Automatic
+**Process Method: Automatic
 
-Moneris ps_store_id: ********
+**Moneris ps_store_id: ********
 
-Moneris hpp_key: ********
+**Moneris hpp_key: ********
 
-Use IPN: Enabled
+**Use IPN: Enabled
