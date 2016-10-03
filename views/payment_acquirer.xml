@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="acquirer_form_moneris" model="ir.ui.view">
+            <field name="name">acquirer.form.moneris</field>
+            <field name="model">payment.acquirer</field>
+            <field name="inherit_id" ref="payment.acquirer_form"/>
+            <field name="arch" type="xml">
+                <xpath expr='//group[@name="acquirer_display"]' position='after'>
+                    <group attrs="{'invisible': [('provider', '!=', 'moneris')]}">
+                        <group>
+                            <group>
+                                <field name="moneris_email_account"/>
+                                <field name="moneris_seller_account"/>
+                                <field name="moneris_use_ipn"/>
+                            </group>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="transaction_form_moneris" model="ir.ui.view">
+            <field name="name">acquirer.transaction.form.moneris</field>
+            <field name="model">payment.transaction</field>
+            <field name="inherit_id" ref="payment.transaction_form"/>
+            <field name="arch" type="xml">
+                <xpath expr='//notebook' position='inside'>
+                    <page string="Moneris TX Details">
+                        <group>
+                            <field name="moneris_txn_id"/>
+                            <field name="moneris_txn_type"/>
+                            <field name="moneris_txn_oid"/>
+                            <field name="moneris_txn_response"/>
+                            <field name="moneris_txn_ISO"/>
+                            <field name="moneris_txn_eci"/>
+                            <field name="moneris_txn_card"/>
+                            <field name="moneris_txn_cardf4l4"/>
+                            <field name="moneris_txn_bankid"/>
+                            <field name="moneris_txn_bankapp"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>
