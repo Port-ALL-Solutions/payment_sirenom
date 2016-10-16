@@ -9,6 +9,7 @@ import logging
 import urlparse
 import werkzeug.urls
 import urllib2
+import openerp
 
 from openerp.addons.payment.models.payment_acquirer import ValidationError
 from openerp.addons.payment_moneris.controllers.main import MonerisController
@@ -16,6 +17,12 @@ from openerp.osv import osv, fields
 from openerp.tools.float_utils import float_compare
 
 _logger = logging.getLogger(__name__)
+_logger.setLevel(logging.INFO)
+handler = logging.FileHandler('/opt/odoo/custom/drozdyuk/logger1.log', mode='a')
+handler.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+_logger.addHandler(handler)
 
 
 class AcquirerMoneris(osv.Model):
@@ -56,24 +63,6 @@ class AcquirerMoneris(osv.Model):
         'fees_int_var': 3.9,
         'moneris_api_enabled': False,
     }
-
-    def _migrate_moneris_account(self, cr, uid, context=None):
-        """ COMPLETE ME """
-        cr.execute('SELECT id, paypal_account FROM res_company')
-        res = cr.fetchall()
-        for (company_id, company_moneris_account) in res:
-            if company_moneris_account:
-                company_moneris_ids = self.search(cr, uid, [('company_id', '=', company_id), ('name', '=', 'moneris')], limit=1, context=context)
-                if company_moneris_ids:
-                    self.write(cr, uid, company_moneris_ids, {'moneris_email_account': company_moneris_account}, context=context)
-                else:
-                    moneris_view = self.pool['ir.model.data'].get_object(cr, uid, 'payment_moneris', 'moneris_acquirer_button')
-                    self.create(cr, uid, {
-                        'name': 'moneris',
-                        'moneris_email_account': company_moneris_account,
-                        'view_template_id': moneris_view.id,
-                    }, context=context)
-        return True
 
     def moneris_compute_fees(self, cr, uid, id, amount, currency_id, country_id, context=None):
         """ Compute moneris fees.
@@ -201,7 +190,7 @@ class TxMoneris(osv.Model):
             'acquirer_reference': data.get('response_order_id')
         }
         if status == '1':
-            _logger.info('Validated Moneris payment for tx %s: set as done' % (tx.reference))
+            _logger.info('Validated Moneris paymentssssss for tx %s: set as done' % (tx.reference))
             data.update(state='done', date_validate=data.get('date_stamp', fields.datetime.now()))
             return tx.write(data)
         else:

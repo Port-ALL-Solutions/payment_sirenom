@@ -17,7 +17,7 @@ class sale_order(models.Model):
     def action_button_confirm(self, cr, uid, ids, context=None):
         super(sale_order, self).action_button_confirm(cr, uid, ids, context=context)
         r = self.browse(cr, uid, ids[0], context=context)
-        if r.payment_tx_id and r.payment_tx_id.state == 'done' and r.payment_acquirer_id:
+        if r.payment_tx_id and r.payment_tx_id.state == 'done' and r.payment_acquirer_id.provider == 'moneris':
             r._autopay()
 
     def _autopay(self, cr, uid, ids, context=None):

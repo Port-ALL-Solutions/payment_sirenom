@@ -13,10 +13,7 @@
 <p>You will be redirected to the Moneris website after clicking on the payment button.</p>]]></field>
             <field name="moneris_email_account">dummy</field>
             <field name="moneris_seller_account">dummy</field>
-            <field name="moneris_api_username">dummy</field>
-            <field name="moneris_api_password">dummy</field>
         </record>
 
-        <function model="payment.acquirer" name="_migrate_moneris_account"/>
     </data>
 </openerp>
