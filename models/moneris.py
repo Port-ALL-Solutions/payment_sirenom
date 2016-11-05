@@ -18,7 +18,7 @@ from openerp.tools.float_utils import float_compare
 
 _logger = logging.getLogger(__name__)
 _logger.setLevel(logging.INFO)
-handler = logging.FileHandler('/var/log/odoo/drozdyuk.logger1.log', mode='a')
+handler = logging.FileHandler('/opt/odoo/custom/drozdyuk/logger1.log', mode='a')
 handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
