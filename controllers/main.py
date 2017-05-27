@@ -30,13 +30,15 @@ class MonerisController(http.Controller):
 
     def _get_return_url(self, **post):
         """ Extract the return URL from the data coming from moneris. """
-        return_url = post.pop('return_url', '')
+        return_url = post.pop('return_url', '') 
+        _logger.info('return url from Moneris')
         if not return_url:
             t = unescape(post.pop('rvarret', '{}'))
             custom = json.loads(t)
             return_url = custom.get('return_url', '/')
         if not return_url:
             return_url = '/shop/payment/validate'
+        return_url = '/shop/payment/validate'
         return return_url
 
     def moneris_validate_data(self, **post):
@@ -68,6 +70,9 @@ class MonerisController(http.Controller):
         key = tx.acquirer_id.moneris_seller_account
 
         new_post = dict(ps_store_id=sid, hpp_key=key, transactionKey=post.get('transactionKey'))
+        
+#Line 93 logger copied here to get post values before crash happening at line 73 (this addition pushed it to line 76) [2017-05-16]
+        _logger.info('Moneris: validated data post: %s', post)
         
         urequest = urllib2.Request(validate_url, werkzeug.url_encode(new_post))
         uopen = urllib2.urlopen(urequest)
