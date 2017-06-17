@@ -114,11 +114,14 @@ class MonerisController(http.Controller):
     @http.route('/payment/moneris/dpn', type='http', auth="none", methods=['POST', 'GET'], csrf=False)
     def moneris_dpn(self, **post):
         """ Moneris DPN """
+        _logger.info('Beginning Moneris DPN') # debug
         _logger.info('Beginning Moneris DPN form_feedback with post data %s', pprint.pformat(post))  # debug
+        _logger.info('pre-return dpn: %s', post) # debug
         return_url = self._get_return_url(**post)
+        _logger.info('pre-return url: %s', return_url) # debug
         if self.moneris_validate_data(**post):
-            _logger.info('return dpn: %s', post)
-            _logger.info('return url: %s', return_url)
+            _logger.info('post-return dpn: %s', post)
+            _logger.info('post-return url: %s', return_url)
             return werkzeug.utils.redirect(return_url)
         else:
             return werkzeug.utils.redirect(self._cancel_url)
