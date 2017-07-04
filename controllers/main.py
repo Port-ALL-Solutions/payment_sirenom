@@ -75,6 +75,9 @@ class MonerisController(http.Controller):
         _logger.info('Moneris: validated data post: %s', post)
         
         urequest = urllib2.Request(validate_url, werkzeug.url_encode(new_post))
+        _logger.info('urequest > validate_url: %s', validate_url)
+        _logger.info('urequest > new_post: %s', new_post)
+#        _logger.info('urequest from moneris_validate_data: %s', urequest)
         uopen = urllib2.urlopen(urequest)
         resp = uopen.read()
         _logger.info(resp)
@@ -140,5 +143,13 @@ class MonerisController(http.Controller):
                 if so:
                     _logger.info('cancel')
                 _logger.info('done')
+        return_url = '/shop/cart'
+        return werkzeug.utils.redirect(return_url)
+    
+    @http.route('/payment/moneris/async', type='http', auth="none", methods=['POST', 'GET'], csrf=False)
+    def moneris_async(self, **post):
+        """ Moneris Asynchronous Response: GET on this route """
+#        cr, uid, context = request.cr, SUPERUSER_ID, request.context
+        _logger.info('Beginning Moneris Async Response with post data %s', pprint.pformat(post))
         return_url = '/shop/cart'
         return werkzeug.utils.redirect(return_url)
