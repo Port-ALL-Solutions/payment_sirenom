@@ -51,25 +51,32 @@ class MonerisController(http.Controller):
          - step 3: moneris send either Valid-Approved or INVALID (single word)
 
         Once data is validated, process it. """
+        _logger.info('Moneris: start validating data post: %s', post) #added 2017-08-28
         res = False
         cr, uid, context = request.cr, request.uid, request.context
+        _logger.info('Moneris: reference : %s', post.get('rvaroid')) #added 2017-08-28
         reference = post.get('rvaroid')
         tx = None
         if reference:
+            _logger.info('Moneris: validate has reference : %s', reference) #added 2017-08-28
             tx_ids = request.registry['payment.transaction'].search(cr, uid, [('reference', '=', reference)], context=context)
             if tx_ids:
                 tx = request.registry['payment.transaction'].browse(cr, uid, tx_ids[0], context=context)
         if tx:
+            _logger.info('Moneris: validate has tx') #added 2017-08-28
             moneris_urls = request.registry['payment.acquirer']._get_moneris_urls(cr, uid, tx and tx.acquirer_id and tx.acquirer_id.environment or 'prod', context=context)
             validate_url = moneris_urls['moneris_auth_url']
+            _logger.info('Moneris: validate_url : %s', validate_url) #added 2017-08-28
         else:
             _logger.warning('Moneris: No order found')
             return res
-
+        
+        _logger.info('Moneris: validate ifs passed') #added 2017-08-28
         sid = tx.acquirer_id.moneris_email_account
         key = tx.acquirer_id.moneris_seller_account
 
         new_post = dict(ps_store_id=sid, hpp_key=key, transactionKey=post.get('transactionKey'))
+        _logger.info('urequest > new_post: %s', new_post) #added 2017-08-28
         
 #Line 93 logger copied here to get post values before crash happening at line 73 (this addition pushed it to line 76) [2017-05-16]
         _logger.info('Moneris: validated data post: %s', post)
